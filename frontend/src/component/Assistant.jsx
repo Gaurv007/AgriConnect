@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Assistant = () => {
+const resetPassword= () => {
   return (
     <div>
         <p>this is assistant page</p>
@@ -8,5 +8,5 @@ const Assistant = () => {
   )
 }
 
-export default Assistant
+export default resetPassword
     

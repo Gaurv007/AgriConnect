@@ -7,60 +7,131 @@ import tools from "../assets/tools.avif";
 import land from "../assets/land.jpg";
 import straw from "../assets/straw.jpg";
 import labour from "../assets/labour.jpeg";
+import { useDispatch, useSelector } from "react-redux";
+import { createEquipment } from "../State/Auth/Action.js";
+
+
 
 const Rent = () => {
+  const dispatch = useDispatch();
+const { equipmentLoading, equipmentError } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    price: '',
+    category: '',
+    pricingUnit: '',
+    country: '',
+    state: '',
+    pincode: '',
+    address: ''
+  });
 
   const rentalItems = [
     {
       id: 1,
       name: 'Tractor',
       image: tractor,
-      description: 'Heavy-duty tractors for all farming needs'
+      description: 'Heavy-duty tractors for all farming needs',
+      category: 'TRACTOR'
     },
     {
       id: 2,
-      name: 'Harvester',
+      name: ' HARVESTOR',
       image: harvester,
-      description: 'Efficient harvesting equipment'
+      description: 'Efficient harvesting equipment',
+      category: 'HARVESTOR'
     },
     {
       id: 3,
       name: 'Labour Services',
       image: labour,
-      description: 'Skilled agricultural workers'
+      description: 'Skilled agricultural workers',
+      category: 'LABOUR'
     },
     {
       id: 4,
       name: 'Farm Tools',
       image: tools,
-      description: 'Essential farming tools and equipment'
+      description: 'Essential farming tools and equipment',
+      category: 'TOOLS'
     },
     {
       id: 5,
       name: 'Agricultural Land',
       image: land,
-      description: 'Fertile land for farming projects'
+      description: 'Fertile land for farming projects',
+      category: 'LAND'
     },
     {
       id: 6,
       name: 'Straw & Feed',
       image: straw,
-      description: 'Quality straw and animal feed'
+      description: 'Quality straw and animal feed',
+      category: ' FODDER'
     }
+  ];
+
+  const categories = [
+    'TRACTOR', ' HARVESTOR', 'LABOUR', 'TOOLS', 'LAND', ' FODDER', 'SEEDS', 'FERTILIZER', 'OTHER'
+  ];
+
+  const pricingUnits = [
+    'PER_DAY', 'PER_HOUR', 'PER_WEEK', 'PER_MONTH', 'PER_ACRE', 'PER_UNIT'
   ];
 
   const handleRentClick = (item) => {
     setSelectedItem(item);
+    setFormData(prev => ({
+      ...prev,
+      title: item.name,
+      category: item.category,
+      description: item.description
+    }));
     setShowForm(true);
   };
 
   const closeForm = () => {
     setShowForm(false);
     setSelectedItem(null);
+    setFormData({
+      title: '',
+      description: '',
+      price: '',
+      category: '',
+      pricingUnit: '',
+      country: '',
+      state: '',
+      pincode: '',
+      address: ''
+    });
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+  e.preventDefault();
+
+  dispatch(createEquipment(formData))
+    .then(() => {
+      alert("✅ Equipment listed successfully!");
+      closeForm();
+    })
+    .catch(() => {
+      alert("❌ Failed to list equipment. Please try again.");
+    });
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 relative overflow-hidden">
@@ -91,17 +162,14 @@ const Rent = () => {
       <nav className="relative z-50 flex justify-between items-center px-8 py-6">
         <div className="flex items-center space-x-4">
           <img src={agrilogo} alt="AgriConnect" className="h-16 w-auto drop-shadow-lg" />
-
         </div>
 
         <div className="flex items-center space-x-4">
-          <button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 font-semibold"
-    >
+          <button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 font-semibold">
             Get My Booking
           </button>
 
-          <button  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 font-semibold"
-    >
+          <button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-6 py-3 rounded-full shadow-lg transform hover:scale-105 transition duration-300 font-semibold">
             Check Booking
           </button>
           <button 
@@ -128,8 +196,6 @@ const Rent = () => {
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-green-400 rounded-full mx-auto mt-6"></div>
         </div>
-
-
 
         {/* Rental Items Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -181,14 +247,14 @@ const Rent = () => {
               <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-t-3xl">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-bold text-white">Rent {selectedItem?.name}</h3>
+                    <h3 className="text-2xl font-bold text-white">List {selectedItem?.name} for Rent</h3>
                     <p className="text-green-100">Fill out the details below</p>
                   </div>
                   <button 
                     onClick={closeForm}
                     className="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition duration-300"
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -197,109 +263,173 @@ const Rent = () => {
 
               {/* Form Content */}
               <div className="p-8">
-                <form className="space-y-6">
-                  {/* Personal Information */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
-                        placeholder="Enter your full name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
-                        placeholder="+91 9876543210"
-                        required
-                      />
-                    </div>
-                  </div>
-
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Title */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address
+                      Title *
                     </label>
                     <input
-                      type="email"
+                      type="text"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
-                      placeholder="farmer@example.com"
+                      placeholder="Enter item title"
                       required
                     />
                   </div>
 
-                  {/* Rental Details */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Rental Start Date
-                      </label>
-                      <input
-                        type="date"
-                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Rental Duration (Days)
-                      </label>
-                      <input
-                        type="number"
-                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
-                        placeholder="Number of days"
-                        min="1"
-                        required
-                      />
-                    </div>
-                  </div>
-
+                  {/* Description */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Delivery Address
+                      Description *
                     </label>
                     <textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleInputChange}
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
                       rows="3"
-                      placeholder="Enter your farm address for delivery"
+                      placeholder="Detailed description of the item"
                       required
                     ></textarea>
                   </div>
 
+                  {/* Price and Pricing Unit */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Price *
+                      </label>
+                      <input
+                        type="number"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleInputChange}
+                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
+                        placeholder="Enter price"
+                        min="0"
+                        step="0.01"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Pricing Unit *
+                      </label>
+                      <select
+                        name="pricingUnit"
+                        value={formData.pricingUnit}
+                        onChange={handleInputChange}
+                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
+                        required
+                      >
+                        <option value="">Select pricing unit</option>
+                        {pricingUnits.map(unit => (
+                          <option key={unit} value={unit}>
+                            {unit.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Category */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Additional Requirements (Optional)
+                      Category *
+                    </label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
+                      required
+                    >
+                      <option value="">Select category</option>
+                      {categories.map(category => (
+                        <option key={category} value={category}>
+                          {category.toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Location Fields */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Country *
+                      </label>
+                      <input
+                        type="text"
+                        name="country"
+                        value={formData.country}
+                        onChange={handleInputChange}
+                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
+                        placeholder="Enter country"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        State *
+                      </label>
+                      <input
+                        type="text"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
+                        placeholder="Enter state"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Pin Code *
+                    </label>
+                    <input
+                      type="text"
+                      name="pincode"
+                      value={formData.pincode}
+                      onChange={handleInputChange}
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
+                      placeholder="Enter pin code"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Address *
                     </label>
                     <textarea
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300"
                       rows="3"
-                      placeholder="Any specific requirements or notes..."
+                      placeholder="Enter complete address"
+                      required
                     ></textarea>
                   </div>
 
                   {/* Form Actions */}
                   <div className="flex space-x-4 pt-6">
-                    <button
-                      type="button"
-                      onClick={closeForm}
-                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-6 rounded-xl transition duration-300"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300"
-                    >
-                      Submit Rental Request
-                    </button>
+                   <button
+  type="submit"
+  disabled={equipmentLoading}
+  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
+             text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300
+             disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {equipmentLoading ? "Submitting..." : "Submit Rental Listing"}
+</button>
+
                   </div>
                 </form>
               </div>

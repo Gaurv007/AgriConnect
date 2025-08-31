@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import agrilogo from '../assets/agrilogo.png';
+import { useDispatch,useSelector } from 'react-redux';
+
+import { login } from '../State/Auth/Action';
 
 const Login = () => {
+  const dispatch=useDispatch()
   const navigate = useNavigate();
+  const { jwt, loading, error } = useSelector((state) => state.auth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = (e) => {
-    e.preventDefault();
-    navigate('/home');
+      e.preventDefault();
+     const loginData = { email, password };
+     dispatch(login(loginData)); 
   };
+   useEffect(() => {
+    if (jwt) {
+      navigate("/home");   // or "/dashboard"
+    }
+  }, [jwt, navigate]);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 relative overflow-hidden">
@@ -149,13 +161,7 @@ const Login = () => {
 
                   {/* Remember Me & Forgot Password */}
                   <div className="flex items-center justify-between">
-                    <label className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
-                      />
-                      <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                    </label>
+                   
                     <button 
                       type="button" 
                       className="text-sm text-green-600 hover:text-green-700 font-semibold transition duration-300"
@@ -185,13 +191,7 @@ const Login = () => {
                   <div className="flex-1 border-t border-gray-300"></div>
                 </div>
 
-                {/* Social Login Buttons */}
-                <div className="space-y-3">
-                  <button className="w-full bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center">
-                    <span className="text-xl mr-3">🌐</span>
-                    Continue with Google
-                  </button>
-                </div>
+               
 
                 {/* Sign Up Link */}
                 <p className="text-center text-gray-600 mt-8">

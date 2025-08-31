@@ -1,23 +1,25 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import agrilogo from "../assets/agrilogo.png";
+ import React, { useState } from "react";
+import {useDispatch}from "react-redux"
+import { register } from "../State/Auth/Action";
+import { data } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  const navigate = useNavigate();
+  const dispatch=useDispatch()
+
+  // const navigate = () => console.log('Navigate to login');
+   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
+    fullName: '',
     email: '',
-    role: '',
-    phone: '',
+    phoneNumber: '',
     password: '',
-    confirmPassword: '',
     country: 'India',
     state: '',
-    address: '',
-    pincode: ''
+    pincode: '',
+    address: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -27,9 +29,12 @@ const Signup = () => {
   };
 
   const handleSubmit = (e) => {
+   dispatch(register(formData));
+
     e.preventDefault();
     // Add validation logic here
-    navigate('/');
+    console.log('Form Data:', formData);
+    navigate('/login');
   };
 
   return (
@@ -59,20 +64,18 @@ const Signup = () => {
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
-        <div className="w-full max-w-7xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
-          <div className="flex flex-col lg:flex-row min-h-[700px]">
+        <div className="w-full max-w-6xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
+          <div className="flex flex-col lg:flex-row min-h-[600px]">
             
             {/* Left Side - Form */}
             <div className="lg:w-2/3 flex items-center justify-center p-8 lg:p-12">
-              <div className="w-full max-w-4xl">
+              <div className="w-full max-w-3xl">
                 {/* Header */}
                 <div className="text-center mb-8">
                   <div className="flex items-center justify-center mb-4">
-                    <img 
-                      src={agrilogo} 
-                      alt="AgriConnect" 
-                      className="h-12 w-auto mr-3" 
-                    />
+                    <div className="h-12 w-12 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white text-xl font-bold">A</span>
+                    </div>
                     <h1 className="text-4xl mb-2 font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                       Join AgriConnect
                     </h1>
@@ -83,238 +86,195 @@ const Signup = () => {
                   <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mx-auto mt-4"></div>
                 </div>
 
-                {/* Signup Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Personal Information Section */}
-                  <div className="bg-gray-50/70 rounded-2xl p-6">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                      <span className="text-2xl mr-2">👤</span>
-                      Personal Information
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Full Name
-                        </label>
-                        <input
-                          type="text"
-                          name="username"
-                          value={formData.username}
-                          onChange={handleInputChange}
-                          placeholder="Enter your full name"
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
+          {/* Signup Form */}
+<form onSubmit={handleSubmit} className="space-y-6">
+  {/* Personal Information Section */}
+  <div className="bg-gray-50/70 rounded-2xl p-6">
+    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+      <span className="text-2xl mr-2">👤</span>
+      Personal Information
+    </h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Full Name
+        </label>
+        <input
+          type="text"
+          name="fullName"
+          value={formData.fullName}
+          onChange={handleInputChange}
+          placeholder="Enter your full name"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
 
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          placeholder="farmer@example.com"
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Email Address
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          placeholder="farmer@example.com"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
 
-                      <div >
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Role
-                        </label>
-                        <select
-                          name="role"
-                          value={formData.role}
-                          onChange={handleInputChange}
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        >
-                          <option value="">Select your role</option>
-                          <option value="farmer">🚜 Farmer</option>
-                          <option value="buyer">🛒 Equipment Buyer</option>
-                          <option value="vendor">🏪 Equipment Vendor</option>
-                        </select>
-                      </div>
+      <div className="group md:col-span-2">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Phone Number
+        </label>
+        <input
+          type="tel"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleInputChange}
+          placeholder="+91 9876543210"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
+    </div>
+  </div>
 
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Phone Number
-                        </label>
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          placeholder="+91 9876543210"
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
+  {/* Security Section */}
+  <div className="bg-blue-50/70 rounded-2xl p-6">
+    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+      <span className="text-2xl mr-2">🔒</span>
+      Security
+    </h3>
+    <div className="group">
+      <label className="block text-sm font-semibold text-gray-700 mb-2">
+        Password
+      </label>
+      <div className="relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          placeholder="Create a strong password"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
+        >
+          <span className="text-xl">{showPassword ? '🙈' : '👁️'}</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
-                  {/* Security Section */}
-                  <div className="bg-blue-50/70 rounded-2xl p-6">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                      <span className="text-2xl mr-2">🔒</span>
-                      Security
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            placeholder="Create a strong password"
-                            className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                            required
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
-                          >
-                            <span className="text-xl">{showPassword ? '🙈' : '👁️'}</span>
-                          </button>
-                        </div>
-                      </div>
+  {/* Location Section */}
+  <div className="bg-green-50/70 rounded-2xl p-6">
+    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+      <span className="text-2xl mr-2">📍</span>
+      Location Details
+    </h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Country
+        </label>
+        <input
+          type="text"
+          name="country"
+          value={formData.country}
+          onChange={handleInputChange}
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
 
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Confirm Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            type={showConfirmPassword ? "text" : "password"}
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            placeholder="Confirm your password"
-                            className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                            required
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
-                          >
-                            <span className="text-xl">{showConfirmPassword ? '🙈' : '👁️'}</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          State
+        </label>
+        <input
+          type="text"
+          name="state"
+          value={formData.state}
+          onChange={handleInputChange}
+          placeholder="e.g., Maharashtra"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
 
-                  {/* Location Section */}
-                  <div className="bg-green-50/70 rounded-2xl p-6">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                      <span className="text-2xl mr-2">📍</span>
-                      Location Details
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Country
-                        </label>
-                        <input
-                          type="text"
-                          name="country"
-                          value={formData.country}
-                          onChange={handleInputChange}
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Pincode
+        </label>
+        <input
+          type="text"
+          name="pincode"
+          value={formData.pincode}
+          onChange={handleInputChange}
+          placeholder="123456"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
 
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          State
-                        </label>
-                        <input
-                          type="text"
-                          name="state"
-                          value={formData.state}
-                          onChange={handleInputChange}
-                          placeholder="e.g., Maharashtra"
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
+      <div className="group">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Address
+        </label>
+        <input
+          type="text"
+          name="address"
+          value={formData.address}
+          onChange={handleInputChange}
+          placeholder="Street, City"
+          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
+          required
+        />
+      </div>
+    </div>
+  </div>
 
-                      <div className="group md:col-span-1">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Pincode
-                        </label>
-                        <input
-                          type="text"
-                          name="pincode"
-                          value={formData.pincode}
-                          onChange={handleInputChange}
-                          placeholder="123456"
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
+  {/* Terms and Submit */}
+  <div className="space-y-6">
+    <label className="flex items-start space-x-3">
+      <input 
+        type="checkbox" 
+        className="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2 mt-1"
+        required
+      />
+      <span className="text-sm text-gray-600 leading-relaxed">
+        I agree to the{' '}
+        <button type="button" className="text-green-600 hover:underline font-semibold">
+          Terms of Service
+        </button>{' '}
+        and{' '}
+        <button type="button" className="text-green-600 hover:underline font-semibold">
+          Privacy Policy
+        </button>
+      </span>
+    </label>
 
-                      <div className="group md:col-span-1">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Address
-                        </label>
-                        <input
-                          type="text"
-                          name="address"
-                          value={formData.address}
-                          onChange={handleInputChange}
-                          placeholder="Street, City"
-                          className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500 transition duration-300 group-hover:border-gray-300"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
+    <button
+      type="submit"
+      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-[1.02] hover:shadow-xl transition duration-300"
+    >
+      <span className="flex items-center justify-center">
+        <span>Create Account</span>
+        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </span>
+    </button>
+  </div>
+</form>
 
-                  {/* Terms and Submit */}
-                  <div className="space-y-6">
-                    <label className="flex items-start space-x-3">
-                      <input 
-                        type="checkbox" 
-                        className="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2 mt-1"
-                        required
-                      />
-                      <span className="text-sm text-gray-600 leading-relaxed">
-                        I agree to the{' '}
-                        <button type="button" className="text-green-600 hover:underline font-semibold">
-                          Terms of Service
-                        </button>{' '}
-                        and{' '}
-                        <button type="button" className="text-green-600 hover:underline font-semibold">
-                          Privacy Policy
-                        </button>
-                      </span>
-                    </label>
-
-                    <button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-[1.02] hover:shadow-xl transition duration-300"
-                    >
-                      <span className="flex items-center justify-center">
-                        <span>Create Account</span>
-                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </span>
-                    </button>
-                  </div>
-                </form>
 
                 {/* Login Link */}
                 <div className="text-center mt-8">
@@ -322,7 +282,7 @@ const Signup = () => {
                     Already have an account?{' '}
                     <button
                       type="button"
-                      onClick={() => navigate('/')}
+                      onClick={() => navigate('/login')}
                       className="text-green-600 hover:text-green-700 font-semibold transition duration-300 hover:underline"
                     >
                       Sign in here
@@ -399,4 +359,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signup; 
