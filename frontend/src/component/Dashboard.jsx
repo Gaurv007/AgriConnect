@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import About from "./About";
 import Testimonial from "./Testimonial";
 import Footer from "./Footer";
-
+  import { useNavigate } from 'react-router-dom';
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -19,8 +19,10 @@ const staggerContainer = {
     transition: { staggerChildren: 0.2, delayChildren: 0.3 },
   },
 };
+import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
+    const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#1dd1a1] to-[#48dbfb] bg-fixed bg-cover">
 
@@ -53,7 +55,7 @@ const Dashboard = () => {
               className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-            >
+ onClick={()=>navigate("/signup")} >
               Start Farming Smart
             </motion.button>
             <motion.button

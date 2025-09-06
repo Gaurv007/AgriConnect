@@ -18,7 +18,7 @@ import {
 
 import axios from "axios";
 
-const baseUrl = "http://localhost:8080/api";
+const baseUrl = "https://agriheleper-2.onrender.com/api";
 
 // ================== REGISTER ==================
 export const register = (userData) => async (dispatch) => {
@@ -64,7 +64,7 @@ export const createEquipment = (equipmentData) => async (dispatch) => {
   try {
     const token = localStorage.getItem("jwt");
     const { data } = await axios.post(
-      `http://localhost:8080/equipment/register`,
+      `https://agriheleper-2.onrender.com/equipment/register`,
       equipmentData,
       {
         headers: {
@@ -88,7 +88,7 @@ export const fetchEquipments = (category) => async (dispatch) => {
   try {
     const token = localStorage.getItem("jwt");
     const { data } = await axios.get(
-      `http://localhost:8080/equipment/category/${category}`,
+      `https://agriheleper-2.onrender.com/equipment/category/${category}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

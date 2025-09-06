@@ -190,11 +190,7 @@ const About = () => {
                         alt={item.name}
                         className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
                       />
-                      <div className="absolute top-4 right-4">
-                        <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                          {item.price}
-                        </span>
-                      </div>
+
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
 
@@ -222,15 +218,7 @@ const About = () => {
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex space-x-3">
-                        <button className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-2 px-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105">
-                          Rent Now
-                        </button>
-                        <button className="px-4 py-2 border border-white/30 text-white rounded-lg hover:bg-white/10 transition-all duration-300">
-                          Details
-                        </button>
-                      </div>
+
                     </div>
                   </div>
                 </div>
